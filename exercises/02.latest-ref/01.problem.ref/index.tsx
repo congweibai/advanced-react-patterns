@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import * as ReactDOM from 'react-dom/client'
 
 function debounce<Callback extends (...args: Array<unknown>) => void>(
@@ -19,12 +19,19 @@ function useDebounce<Callback extends (...args: Array<unknown>) => unknown>(
 	delay: number,
 ) {
 	// 🐨 create a latest ref (via useRef and useEffect) here
+	const callbackRef = useRef(callback)
+	useEffect(() => {
+		callbackRef.current = callback
+	})
 
 	// use the latest version of the callback here:
 	// 💰 you'll need to pass an anonymous function to debounce. Do *not*
 	// simply change this to `debounce(latestCallbackRef.current, delay)`
 	// as that won't work. Can you think of why?
-	return useMemo(() => debounce(callback, delay), [callback, delay])
+	return useMemo(
+		() => debounce((...args) => callbackRef.current(...args), delay),
+		[delay],
+	)
 }
 
 function App() {

@@ -48,7 +48,6 @@ type ToggleButtonProps = Omit<React.ComponentProps<typeof Switch>, 'on'> & {
 export function ToggleButton(props: ToggleButtonProps) {
 	// 🐨 get `on` and `toggle` from the ToggleContext with `use`
 	const { on, toggle } = use(ToggleContext)!
-	console.log('on', on)
 	return <Switch on={on} onClick={toggle} {...props} />
 }
 

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, createContext, use } from 'react'
 import { Switch } from '#shared/switch.tsx'
 
 // 🐨 create your ToggleContext context here
@@ -7,6 +7,13 @@ import { Switch } from '#shared/switch.tsx'
 // 🦺 the typing for the context value should be `{on: boolean; toggle: () => void}`
 // but because we must initialize it to `null`, you need to union that with `null`
 
+interface ToggleContexttType {
+	on: boolean
+	toggle: () => void
+}
+
+const ToggleContext = createContext<ToggleContexttType | null>(null)
+
 export function Toggle({ children }: { children: React.ReactNode }) {
 	const [on, setOn] = useState(false)
 	const toggle = () => setOn(!on)
@@ -14,20 +21,24 @@ export function Toggle({ children }: { children: React.ReactNode }) {
 	// 💣 remove this and instead return <ToggleContext> where
 	// the value is an object that has `on` and `toggle` on it. Render children
 	// within the provider.
-	return <>TODO...</>
+	const contextValue = {
+		on,
+		toggle,
+	}
+	return <ToggleContext value={contextValue}>{children}</ToggleContext>
 }
 
 export function ToggleOn({ children }: { children: React.ReactNode }) {
 	// 🐨 instead of this constant value, we'll need to get that from
 	// use(ToggleContext)
 	// 📜 https://react.dev/reference/react/use#reading-context-with-use
-	const on = false
+	const { on } = use(ToggleContext)!
 	return <>{on ? children : null}</>
 }
 
 export function ToggleOff({ children }: { children: React.ReactNode }) {
 	// 🐨 do the same thing to this that you did to the ToggleOn component
-	const on = false
+	const { on } = use(ToggleContext)!
 	return <>{on ? null : children}</>
 }
 
@@ -36,8 +47,8 @@ type ToggleButtonProps = Omit<React.ComponentProps<typeof Switch>, 'on'> & {
 }
 export function ToggleButton(props: ToggleButtonProps) {
 	// 🐨 get `on` and `toggle` from the ToggleContext with `use`
-	const on = false
-	const toggle = () => {}
+	const { on, toggle } = use(ToggleContext)!
+	console.log('on', on)
 	return <Switch on={on} onClick={toggle} {...props} />
 }
 

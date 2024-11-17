@@ -1,23 +1,37 @@
-import { createContext, use, useState } from 'react'
+import { createContext, use, useId, useState } from 'react'
 import { Switch } from '#shared/switch.tsx'
+import { SlotContext } from './slots'
 
 // 🐨 add an id string to the ToggleValue type
-type ToggleValue = { on: boolean; toggle: () => void }
+type ToggleValue = { on: boolean; toggle: () => void; id: string }
 const ToggleContext = createContext<ToggleValue | null>(null)
 
 // 🐨 update this to accept an optional id
-export function Toggle({ children }: { children: React.ReactNode }) {
+export function Toggle({
+	children,
+	id,
+}: {
+	children: React.ReactNode
+	id?: string
+}) {
 	const [on, setOn] = useState(false)
 	// 🐨 generate an id using useId (💰 similar to in text-field.tsx)
+	const generatedId = useId()
+	id ??= generatedId
 
 	const toggle = () => setOn(!on)
 
 	// 🐨 create a slots object that has props for a slot called
 	// "label" with an htmlFor prop
+	const slots = { label: { htmlFor: id } }
 
 	// 🐨 wrap this in SlotContext and pass the labelProps in the label slot
 	// 🐨 add the id to the value in the ToggleContext
-	return <ToggleContext value={{ on, toggle }}>{children}</ToggleContext>
+	return (
+		<SlotContext value={slots}>
+			<ToggleContext value={{ on, toggle, id }}>{children}</ToggleContext>
+		</SlotContext>
+	)
 }
 
 function useToggle() {
@@ -45,7 +59,7 @@ type ToggleButtonProps = Omit<React.ComponentProps<typeof Switch>, 'on'> & {
 }
 export function ToggleButton({ ...props }: ToggleButtonProps) {
 	// 🐨 get the id out of useToggle
-	const { on, toggle } = useToggle()
+	const { on, toggle, id } = useToggle()
 	// 🐨 pass the id for the ToggleButton here
-	return <Switch {...props} on={on} onClick={toggle} />
+	return <Switch {...props} on={on} onClick={toggle} id={id} />
 }

@@ -11,8 +11,8 @@ export function App() {
 			<div>
 				<Toggle>
 					{/* 🐨 switch this label for the Label component from ./slots.tsx */}
-					<label htmlFor={partyModeId}>Party mode</label>
 					{/* 🐨 remove this id prop */}
+					<Label>Party mode</Label>
 					<ToggleButton id={partyModeId} />
 					<ToggleOn>Let's party 🥳</ToggleOn>
 					<ToggleOff>Sad town 😭</ToggleOff>

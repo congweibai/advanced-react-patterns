@@ -1,6 +1,6 @@
-import { Input, Label } from './slots.tsx'
+import { Input, Label, Switch, Text } from './slots.tsx'
 import { TextField } from './text-field.tsx'
-import { Toggle, ToggleButton, ToggleOff, ToggleOn } from './toggle.tsx'
+import { Toggle } from './toggle.tsx'
 
 export function App() {
 	return (
@@ -9,10 +9,10 @@ export function App() {
 				<Toggle>
 					<Label>Party mode</Label>
 					{/* 🐨 switch this for the Switch slot component */}
-					<ToggleButton />
+					<Switch />
 					{/* 🐨 change these to the Text slot component with appropriate slot props */}
-					<ToggleOn>Let's party 🥳</ToggleOn>
-					<ToggleOff>Sad town 😭</ToggleOff>
+					<Text slot="onText">Let's party 🥳</Text>
+					<Text slot="offText">Sad town 😭</Text>
 				</Toggle>
 			</div>
 			<hr />

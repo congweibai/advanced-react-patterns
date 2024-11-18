@@ -1,4 +1,4 @@
-import { useReducer } from 'react'
+import { useReducer, useRef } from 'react'
 
 function callAll<Args extends Array<unknown>>(
 	...fns: Array<((...args: Args) => unknown) | undefined>
@@ -24,14 +24,15 @@ function toggleReducer(state: ToggleState, action: ToggleAction) {
 
 export function useToggle({ initialOn = false } = {}) {
 	// 🐨 wrap this in a useRef
-	const initialState = { on: initialOn }
+	const initialState = useRef({ on: initialOn })
 	// 🐨 pass the ref-ed initial state into useReducer
-	const [state, dispatch] = useReducer(toggleReducer, initialState)
+	const [state, dispatch] = useReducer(toggleReducer, initialState.current)
 	const { on } = state
 
 	const toggle = () => dispatch({ type: 'toggle' })
 	// 🐨 make sure the ref-ed initial state gets passed here
-	const reset = () => dispatch({ type: 'reset', initialState })
+	const reset = () =>
+		dispatch({ type: 'reset', initialState: initialState.current })
 
 	function getTogglerProps<Props>({
 		onClick,

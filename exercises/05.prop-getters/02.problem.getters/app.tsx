@@ -3,9 +3,9 @@ import { useToggle } from './toggle.tsx'
 
 export function App() {
 	// 💣 delete this:
-	const getTogglerProps = (props: any) => props
+	// const getTogglerProps = (props: any) => props
 	// 🐨 destructure the getTogglerProps function from useToggle
-	const { on } = useToggle()
+	const { on, getTogglerProps } = useToggle()
 	return (
 		<div>
 			<Switch {...getTogglerProps({ on })} />

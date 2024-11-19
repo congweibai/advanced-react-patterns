@@ -12,6 +12,20 @@ export function App() {
 		// ./toggle.tsx except in the action.type === 'toggle' case, it should check
 		// whether the toggle has been clicked too much and if it has then it should
 		// just return the state rather than make a new state object.
+		reducer: (state, action) => {
+			switch (action.type) {
+				case 'toggle': {
+					if (clickedTooMuch)
+						return {
+							on: state.on,
+						}
+					return { on: !state.on }
+				}
+				case 'reset': {
+					return action.initialState
+				}
+			}
+		},
 	})
 
 	return (

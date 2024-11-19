@@ -23,12 +23,12 @@ function toggleReducer(state: ToggleState, action: ToggleAction) {
 }
 
 // 🐨 add a new option called `reducer` that defaults to `toggleReducer`
-export function useToggle({ initialOn = false } = {}) {
+export function useToggle({ initialOn = false, reducer = toggleReducer } = {}) {
 	const { current: initialState } = useRef<ToggleState>({ on: initialOn })
 	// 🐨 instead of passing `toggleReducer` here, pass the `reducer` that's
 	// provided as an option
 	// ... and that's it! Don't forget to check the next step!
-	const [state, dispatch] = useReducer(toggleReducer, initialState)
+	const [state, dispatch] = useReducer(reducer, initialState)
 	const { on } = state
 
 	const toggle = () => dispatch({ type: 'toggle' })

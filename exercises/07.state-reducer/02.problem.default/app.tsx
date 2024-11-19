@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Switch } from '#shared/switch.tsx'
-import { useToggle } from './toggle.tsx'
+import { toggleReducer, useToggle } from './toggle.tsx'
 // 🐨 import the toggleReducer
 
 export function App() {
@@ -13,21 +13,26 @@ export function App() {
 			// 💰 if the action.type === 'toggle' and clickedTooMuch is true
 			// then return state
 
+			if (action.type === 'toggle' && clickedTooMuch) {
+				return state
+			}
+			return toggleReducer(state, action)
+
 			// 🐨 otherwise call the toggleReducer with the state and action
 			// and return that.
 
 			// 💣 delete this whole switch statement
-			switch (action.type) {
-				case 'toggle': {
-					if (clickedTooMuch) {
-						return state
-					}
-					return { on: !state.on }
-				}
-				case 'reset': {
-					return { on: false }
-				}
-			}
+			// switch (action.type) {
+			// 	case 'toggle': {
+			// 		if (clickedTooMuch) {
+			// 			return state
+			// 		}
+			// 		return { on: !state.on }
+			// 	}
+			// 	case 'reset': {
+			// 		return { on: false }
+			// 	}
+			// }
 		},
 	})
 

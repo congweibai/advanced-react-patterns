@@ -12,7 +12,7 @@ type ToggleAction =
 	| { type: 'reset'; initialState: ToggleState }
 
 // 🐨 export this
-function toggleReducer(state: ToggleState, action: ToggleAction) {
+export function toggleReducer(state: ToggleState, action: ToggleAction) {
 	switch (action.type) {
 		case 'toggle': {
 			return { on: !state.on }
